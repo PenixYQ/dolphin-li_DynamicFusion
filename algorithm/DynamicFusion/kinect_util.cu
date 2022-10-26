@@ -355,7 +355,7 @@ namespace dfusion
 			if (z > KINECT_NEAREST_METER)
 			{
 				float3 xyz = intr.uvd2xyz((float)u, (float)v, z);
-				vmap(v, u) = make_float4(xyz.x, xyz.y, xyz.z, 1.f);
+				vmap(v, u) = make_float4(xyz.x, xyz.y, xyz.z, 1.f);    //vmap 的前三位为坐标，最后一位为1
 			}
 			else
 			{
@@ -392,7 +392,7 @@ namespace dfusion
 		{
 			float3 r = normalized(cross(v01 - v00, v10 - v00));
 
-			nmap(v, u) = make_float4(r.x, r.y, r.z, 0);
+			nmap(v, u) = make_float4(r.x, r.y, r.z, 0);    //nmap 的前三位为坐标，最后一位为0  
 		}
 		else
 			nmap(v,u).x = numeric_limits<float>::quiet_NaN();
