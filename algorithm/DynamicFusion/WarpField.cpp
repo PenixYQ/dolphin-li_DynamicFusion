@@ -52,7 +52,7 @@ namespace dfusion
 		unBindKnnFieldTexture();
 		bindKnnFieldSurface();
 		bindKnnFieldTexture();
-		initKnnField();
+		initKnnField();   //初始化 m_knnField 与 m_nodesGraph
 
 		for (int k = 0; k < GraphLevelNum; k++)
 		{

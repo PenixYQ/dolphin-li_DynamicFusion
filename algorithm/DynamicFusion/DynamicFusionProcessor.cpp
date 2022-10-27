@@ -101,14 +101,13 @@ namespace dfusion
 		// volume
 		if (m_volume == nullptr)
 			m_volume = new TsdfVolume();
-		m_volume->init(make_int3(
-			m_param.volume_resolution[0], 
-			m_param.volume_resolution[1], 
-			m_param.volume_resolution[2]),
-			1.f/m_param.voxels_per_meter, 
-			make_float3(-(m_param.volume_resolution[0]-1)*0.5f/m_param.voxels_per_meter, 
-			-(m_param.volume_resolution[1]-1) * 0.5f / m_param.voxels_per_meter, 
-			-KINECT_NEAREST_METER - float(m_param.volume_resolution[2]-1) / m_param.voxels_per_meter)
+		m_volume->init( make_int3( m_param.volume_resolution[0], m_param.volume_resolution[1], m_param.volume_resolution[2]),
+
+						1.f/m_param.voxels_per_meter, 
+						
+						make_float3(-(m_param.volume_resolution[0]-1)*0.5f/m_param.voxels_per_meter, 
+									-(m_param.volume_resolution[1]-1) * 0.5f / m_param.voxels_per_meter, 
+									-KINECT_NEAREST_METER - float(m_param.volume_resolution[2]-1) / m_param.voxels_per_meter)
 			);
 #ifdef SPARSE_VOLUME_TESTING
 		if (m_sparseVolume == nullptr)
@@ -434,8 +433,8 @@ namespace dfusion
 		solver.init(m_warpField, m_vmap_cano, m_nmap_cano, m_param, m_kinect_intr);
 #else
 		// icp iteration
-		m_gsSolver->init(m_warpField, m_vmap_cano, m_nmap_cano, m_param, m_kinect_intr);
 #endif
+		m_gsSolver->init(m_warpField, m_vmap_cano, m_nmap_cano, m_param, m_kinect_intr);
 		float energy = FLT_MAX;
 		for (int icp_iter = 0; icp_iter < m_param.fusion_nonRigidICP_maxIter; icp_iter++)
 		{

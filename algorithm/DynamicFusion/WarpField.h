@@ -54,7 +54,7 @@ namespace dfusion
 
 				dq_blend = pack_dual_quat(q0, q1);
 
-				// the other quats
+				// the other quatsx x
 				for (int k = 1; k < KnnK; k++)
 				{
 					if(knn_k(knnIdx, k) < MaxNodeNum)

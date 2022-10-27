@@ -105,8 +105,8 @@ class __align__(16) Dual_quat_cu{
 		return Dual_quat_cu(_quat_0.conjugate(), _quat_e.conjugate());
 	}
 
-    /// Transformation of point p with the dual quaternion
-	/// NOTE: perform normalize() before this if nedded
+    /// 对向量 p 进行此对偶四元数的转换操作，并返回 p'
+	/// NOTE: perform normalize() before this if needed
 	__device__ __host__ Point3 transform(const Point3& p) const
     {
 #if 0
@@ -127,6 +127,7 @@ class __align__(16) Dual_quat_cu{
 #else
 		// Translation from the normalized dual quaternion equals :
 		// 2.f * qblend_e * conjugate(qblend_0)
+        // t = 2 q0 qe*
 		Vec3 v0 = _quat_0.get_vec_part();
 		Vec3 ve = _quat_e.get_vec_part();
 		Vec3 trans = (ve*_quat_0.w() - v0*_quat_e.w() + v0.cross(ve)) * 2.f;

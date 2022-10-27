@@ -78,8 +78,8 @@ namespace dfusion
 		Tbx::Mat3 R;
 		float3 t;
 
-		float3 origion;
-		float invVoxelSize;
+		float3 origion;     //tsdf原点坐标
+		float invVoxelSize;   //每格体素的大小(多少米)的倒数，即 1/voxel_size，也就是每米有多少个体素
 
 		__device__ __forceinline__ void operator()(int x, int y)
 		{
@@ -89,13 +89,13 @@ namespace dfusion
 			Tbx::Dual_quat_cu dq_blend = WarpField::calc_dual_quat_blend_on_p(knnTex,
 				nodesDqVwTex, p, origion, invVoxelSize);
 
-			Tbx::Point3 dq_p = dq_blend.transform(Tbx::Point3(convert(p)));
-			Tbx::Vec3 dq_n = dq_blend.rotate(convert(n));
+			Tbx::Point3 p_dash = dq_blend.transform(Tbx::Point3(convert(p)));  // p'
+			Tbx::Vec3 n_dash = dq_blend.rotate(convert(n));  // n'
 
 			//vdst(y, x) = GpuMesh::to_point(convert(R.rotate(dq_p)) + t);
 			//ndst(y, x) = GpuMesh::to_point(convert(R.rotate(dq_n)));
-			vdst(y, x) = GpuMesh::to_point(convert(R*dq_p) + t);
-			ndst(y, x) = GpuMesh::to_point(convert(R*dq_n));
+			vdst(y, x) = GpuMesh::to_point(convert(R*p_dash) + t);
+			ndst(y, x) = GpuMesh::to_point(convert(R*n_dash));
 		}
 	};
 

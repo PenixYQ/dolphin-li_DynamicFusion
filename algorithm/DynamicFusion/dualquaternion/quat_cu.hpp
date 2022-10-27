@@ -644,7 +644,7 @@ class __align__(16) Quat_cu{
 
         // An optimized way to compute rotation
         Vec3 q_vec = get_vec_part();
-        return v + (q_vec*2.f).cross( q_vec.cross(v) + v*coeff0 );
+        return v + (q_vec*2.f).cross( q_vec.cross(v) + v*coeff0 );  //这里怎么感觉怪怪的，我怎么还有个 coeff0² * v
     }
 
     /// Do the rotation of point 'p' with the quaternion

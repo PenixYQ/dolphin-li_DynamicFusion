@@ -283,11 +283,13 @@ namespace dfusion
 #define KINECT_NEAREST_METER 0.3
 #endif
 
+	// float3 转 Vec3
 	__device__ __host__ __forceinline__  Tbx::Vec3 convert(float3 a)
 	{
 		return Tbx::Vec3(a.x, a.y, a.z);
 	}
 
+	// Vec3 转 float3
 	__device__ __host__ __forceinline__  float3 convert(Tbx::Vec3 a)
 	{
 		return make_float3(a.x, a.y, a.z);
@@ -352,7 +354,7 @@ namespace dfusion
 
 	__device__ __host__ __forceinline__ KnnIdxType& knn_k(KnnIdx& knn, int i)
 	{
-		return ((KnnIdxType*)(&knn))[i];
+		return ((KnnIdxType*)(&knn))[i];   // 将 uint4 的 knn 强转成 ushort* ，就变成了 8 个元素的数组
 	}
 	__device__ __host__ __forceinline__ const KnnIdxType& knn_k(const KnnIdx& knn, int i)
 	{
@@ -365,13 +367,17 @@ namespace dfusion
 			knn_k(knn, k) = data[k];
 		return knn;
 	}
+
+	// 让一个 uint4 里面的 8 个 ushort 全部等于 c，然后返回这个 uint4 变量
 	__device__ __host__ __forceinline__ KnnIdx make_knn(int c)
 	{
-		KnnIdx knn;
-		for (int k = 0; k < KnnK; k++)
+		KnnIdx knn;   // uint4 or uint2
+		for (int k = 0; k < KnnK; k++)   // KnnK = 8 or KnnK = 4
 			knn_k(knn, k) = c;
 		return knn;
 	}
+
+	// 让一个 uint4 里面的 8 个 ushort 分别等于 data[0~7]，然后返回这个 uint4 变量
 	__device__ __host__ __forceinline__ KnnIdx make_knn(const int* data, int n = KnnK)
 	{
 		KnnIdx knn;
@@ -392,6 +398,8 @@ namespace dfusion
 		surf3Dread(&knn, knnTex, x*sizeof(KnnIdx), y, z);
 		return knn;
 	}
+
+	// 把 knn 写入到 surface 的 (x,y,z) 单元格中去
 	__device__ __forceinline__ void write_knn(KnnIdx knn, cudaSurfaceObject_t knnTex, int x, int y, int z)
 	{
 		surf3Dwrite(knn, knnTex, x*sizeof(KnnIdx), y, z);

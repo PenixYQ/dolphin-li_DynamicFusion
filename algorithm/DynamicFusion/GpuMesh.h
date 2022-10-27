@@ -21,10 +21,14 @@ namespace dfusion
 	{
 	public:
 		typedef float4 PointType;	
+
+		// 转换齐次坐标：去掉 float4 类型的第4维度，返回 float3 类型数据
 		__device__ __host__ __forceinline__ static float3 from_point(GpuMesh::PointType p)
 		{
 			return make_float3(p.x, p.y, p.z);
 		}
+
+		// 转换齐次坐标：在一个 float3 尾部添加一维等于 w(default=1.0) 的维度，变为 float4 类型 (GpuMesh::PointType = float4)
 		__device__ __host__ __forceinline__ static GpuMesh::PointType to_point(float3 p, float w=1.f)
 		{
 			GpuMesh::PointType o;
