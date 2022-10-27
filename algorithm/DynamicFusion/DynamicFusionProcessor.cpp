@@ -267,7 +267,7 @@ namespace dfusion
 
 		insertNewDeformNodes();
 
-		updateRegularizationGraph();
+		updateRegularizationGraph(); //空的 done in insertNewDeformNodes()
 		updateKNNField();
 		m_frame_id++;
 	}
